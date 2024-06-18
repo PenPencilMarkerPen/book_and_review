@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Factory\BookFactory;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
+use Symfony\Component\HttpFoundation\Response;
 
 class BooksTest extends ApiTestCase {
     use Factories, ResetDatabase;
@@ -49,7 +50,7 @@ class BooksTest extends ApiTestCase {
             'publicationDate'=> '2024-6-17'
         ]]);
         // dump($response);
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context'=> '/api/contexts/Book',
@@ -71,7 +72,7 @@ class BooksTest extends ApiTestCase {
             'isbn' => 'invalid',
         ]]);
         // dump($response);
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertResponseHeaderSame('content-type', 'application/problem+json; charset=utf-8');
         
         $this->assertJsonContains([
@@ -111,7 +112,7 @@ class BooksTest extends ApiTestCase {
         $client = static::createClient();
         $iri = $this->findIriBy(Book::class, ['isbn' => '9796372953365']);
         $client->request('DELETE', $iri);
-        $this->assertResponseStatusCodeSame(204);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
         $this->assertNull(
             static::getContainer()->get('doctrine')->getRepository(Book::class)->findOneBy(['isbn' => '9796372953365'])
         );

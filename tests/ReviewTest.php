@@ -9,6 +9,7 @@ use App\Factory\BookFactory;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use function Zenstruck\Foundry\lazy;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ReviewTest extends ApiTestCase {
@@ -55,7 +56,7 @@ class ReviewTest extends ApiTestCase {
             'publicationDate'=> 'September 21, 2016'
         ]]);
 
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context'=> '/api/contexts/Review',
@@ -77,7 +78,7 @@ class ReviewTest extends ApiTestCase {
         $response = static::createClient()->request('POST', '/api/reviews', ['json' => [
             'body' => 'invalid',
         ]]);
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertResponseHeaderSame('content-type', 'application/problem+json; charset=utf-8');
         $this->assertJsonContains([
             '@type' => 'ConstraintViolationList',
@@ -121,7 +122,7 @@ class ReviewTest extends ApiTestCase {
         $client = static::createClient();
         $iri = $this->findIriBy(Review::class, ['id' => '1']);
         $client->request('DELETE', $iri);
-        $this->assertResponseStatusCodeSame(204);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
         $this->assertNull(
             static::getContainer()->get('doctrine')->getRepository(Review::class)->findOneBy(['id' => '1'])
         );
