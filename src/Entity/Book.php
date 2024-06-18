@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(),
         new Post(),
         new Put(),
-        new Delete()
+        new Delete(), 
+        new Patch(),
     ]
 )]
 class Book
