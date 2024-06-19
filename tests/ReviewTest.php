@@ -12,6 +12,7 @@ use function Zenstruck\Foundry\lazy;
 use Symfony\Component\HttpFoundation\Response;
 
 
+
 class ReviewTest extends ApiTestCase {
     use Factories, ResetDatabase;
 
@@ -57,6 +58,7 @@ class ReviewTest extends ApiTestCase {
         ]]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context'=> '/api/contexts/Review',
@@ -79,6 +81,7 @@ class ReviewTest extends ApiTestCase {
             'body' => 'invalid',
         ]]);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+
         $this->assertResponseHeaderSame('content-type', 'application/problem+json; charset=utf-8');
         $this->assertJsonContains([
             '@type' => 'ConstraintViolationList',
@@ -123,8 +126,10 @@ class ReviewTest extends ApiTestCase {
         $iri = $this->findIriBy(Review::class, ['id' => '1']);
         $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+
         $this->assertNull(
             static::getContainer()->get('doctrine')->getRepository(Review::class)->findOneBy(['id' => '1'])
         );
     }
 }
+

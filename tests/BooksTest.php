@@ -9,6 +9,7 @@ use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class BooksTest extends ApiTestCase {
     use Factories, ResetDatabase;
 
@@ -44,6 +45,7 @@ class BooksTest extends ApiTestCase {
     {
         $response = static::createClient()->request('POST', 'api/books', ['json' => [
             'isbn'=> '9796372953365',
+
             'title'=> 'Тут заголовок',
             'description'=> 'Тут описание',
             'author'=> 'Тут автор',
@@ -51,11 +53,13 @@ class BooksTest extends ApiTestCase {
         ]]);
         // dump($response);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             '@context'=> '/api/contexts/Book',
             '@type'=> 'Book',
             'isbn'=> '9796372953365',
+
             'title'=> 'Тут заголовок',
             'description'=> 'Тут описание',
             'author'=> 'Тут автор',
@@ -73,6 +77,7 @@ class BooksTest extends ApiTestCase {
         ]]);
         // dump($response);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+
         $this->assertResponseHeaderSame('content-type', 'application/problem+json; charset=utf-8');
         
         $this->assertJsonContains([
@@ -89,6 +94,7 @@ class BooksTest extends ApiTestCase {
         ]);
         $client = static::createClient();
         $iri = $this->findIriBy(Book::class, ['isbn' => '9796372953365']);
+
         $client->request('PATCH', $iri, [   
             'json' => [
                 'title' => 'updated title',
@@ -102,6 +108,7 @@ class BooksTest extends ApiTestCase {
         $this->assertJsonContains([
             '@id' => $iri,
             'isbn' => '9796372953365',
+
             'title' => 'updated title',
         ]);
     }
@@ -119,3 +126,4 @@ class BooksTest extends ApiTestCase {
     }
 
 }
+
