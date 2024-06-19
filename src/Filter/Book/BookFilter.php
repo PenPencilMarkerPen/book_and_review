@@ -33,13 +33,13 @@ final class BookFilter extends AbstractFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description["regexp_$property"] = [
+            $description["like_$property"] = [
                 'property' => $property,
                 'type' => Type::BUILTIN_TYPE_STRING,
                 'required' => false,
-                'description' => 'Filter using a regex. This will appear in the OpenApi documentation!',
+                'description' => 'Description!',
                 'openapi' => [
-                    'example' => 'Custom example that will be in the documentation and be the default value of the sandbox',
+                    'example' => 'Custom example',
                     'allowReserved' => false,
                     'allowEmptyValue' => true,
                     'explode' => false, 
