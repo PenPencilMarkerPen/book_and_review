@@ -1,5 +1,5 @@
 api_platform:
-  title: Hello API Platform
+  title: Test Api
   version: 1.0.0
   formats:
     jsonld: ["application/ld+json"]
@@ -9,6 +9,13 @@ api_platform:
     html: ["text/html"]
   defaults:
     stateless: true
+    pagination_client_enabled: true
+    pagination_items_per_page: 2
+    pagination_enabled: false
+    collection:
+      pagination:
+        items_per_page_parameter_name: itemsPerPage
+        enabled_parameter_name: pagination
     cache_headers:
       vary: ["Content-Type", "Authorization", "Origin"]
     extra_properties:

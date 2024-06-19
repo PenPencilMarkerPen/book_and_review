@@ -5,17 +5,19 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
+use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ApiResource(
     operations: [
         new Get(),
@@ -24,8 +26,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(),
         new Delete(), 
         new Patch(),
-    ]
+    ],
+    paginationItemsPerPage: 5,
+    paginationClientItemsPerPage: true,
+    paginationClientEnabled: true,
+    paginationFetchJoinCollection: true
 )]
+
 class Book
 {
     #[ORM\Id]
