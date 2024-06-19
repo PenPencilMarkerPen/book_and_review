@@ -20,7 +20,7 @@ class ReviewTest extends ApiTestCase {
         BookFactory::createMany(50);
         ReviewFactory::createMany(100);
 
-        $response = static::createClient()->request('GET', '/api/reviews');
+        $response = static::createClient()->request('GET', '/api/reviews?pagination=true&&itemsPerPage=30');
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
@@ -31,11 +31,11 @@ class ReviewTest extends ApiTestCase {
             '@type'=> 'hydra:Collection',
             'hydra:totalItems'=> 100,
             'hydra:view' =>  [
-                '@id' => '/api/reviews?page=1',
-                '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/api/reviews?page=1',
-                'hydra:last' => '/api/reviews?page=4',
-                'hydra:next' => '/api/reviews?page=2',
+                '@id'=> '/api/reviews?itemsPerPage=30&pagination=true&page=1',
+                '@type'=> 'hydra:PartialCollectionView',
+                'hydra:first'=> '/api/reviews?itemsPerPage=30&pagination=true&page=1',
+                'hydra:last'=> '/api/reviews?itemsPerPage=30&pagination=true&page=4',
+                'hydra:next'=> '/api/reviews?itemsPerPage=30&pagination=true&page=2'
               ]
         ]);
 
