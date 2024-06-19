@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ORM\Entity]
 #[ApiResource(
     operations: [
         new Get(),
