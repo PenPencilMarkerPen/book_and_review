@@ -70,6 +70,9 @@ class Book
     #[Assert\NotNull]
     private ?\DateTimeImmutable $publicationDate = null;
 
+    #[ORM\Column]
+    private ?int $counter = 0;
+
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'book', cascade: ['persist', 'remove'])]
     public iterable $reviews;
 
@@ -139,6 +142,18 @@ class Book
     public function setPublicationDate(?\DateTimeImmutable $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
+
+        return $this;
+    }
+
+    public function getCounter(): ?int
+    {
+        return $this->counter;
+    }
+
+    public function setCounter(?int $counter): static
+    {
+        $this->counter = $counter;
 
         return $this;
     }
