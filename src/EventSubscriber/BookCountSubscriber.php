@@ -26,6 +26,13 @@ class BookCountSubscriber implements EventSubscriberInterface {
         ];
     }
 
+    private function updQueryCounter(Book $book, $entityManager)
+    {
+        $book->setCounter($book->getCounter()+1);
+        $entityManager->persist($book);
+        $entityManager->flush();
+    }
+
     public function updCounter(RequestEvent $event)
     {
         $request = $event->getRequest();
@@ -40,13 +47,12 @@ class BookCountSubscriber implements EventSubscriberInterface {
 
         $book = $entityManager->getRepository(Book::class)->find($bookId);
 
-        if ($book)
+        if ($book instanceof Book)
         {
-            $book->setCounter($book->getCounter()+1);
-            $entityManager->persist($book);
-            $entityManager->flush();
+            $this->updQueryCounter($book, $entityManager);
         }
-
     }
+
+    
 
 }
