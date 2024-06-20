@@ -31,8 +31,9 @@ class BookCountSubscriber implements EventSubscriberInterface {
         $request = $event->getRequest();
         $entityManager = $this->doctrine->getManager();
         $routeParams = $request->attributes->get('_route_params');
+        $path = $request->getPathInfo();
 
-        if (!$request->isMethod(Request::METHOD_GET) || !isset($routeParams['id']) )
+        if (!$request->isMethod(Request::METHOD_GET) || !isset($routeParams['id']) || !preg_match('#^/api/books/\d+$#', $path) )
             return;
 
         $bookId = $routeParams['id'];
