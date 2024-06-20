@@ -36,11 +36,12 @@ class DeleteBooksCommand extends Command{
             '',
         ]);
         $countDeleteBooks = $this->delete();
-        
+
         if ($countDeleteBooks)
+        {
             $output->writeln("Удалено $countDeleteBooks книг!");
             return Command::SUCCESS;
-        
+        }        
         return Command::FAILURE;
     }
 
