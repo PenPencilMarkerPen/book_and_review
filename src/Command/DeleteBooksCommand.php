@@ -35,6 +35,7 @@ class DeleteBooksCommand extends Command{
             '============',
             '',
         ]);
+        
         $countDeleteBooks = $this->delete();
 
         if ($countDeleteBooks)
@@ -46,19 +47,27 @@ class DeleteBooksCommand extends Command{
     }
 
 
-    private function delete()
+    private function delete(int $counter = 0)
     {
         $conn = $this->entityManagerInterface->getConnection();
 
-        $sql ='
-            DELETE FROM book
-            WHERE age(current_date, publication_date) > interval \'7 days\' and counter = 0;
-        ';
-        
-        $resultSet = $conn->executeQuery($sql);
-        
-        $countDeleteBooks = count($resultSet->fetchAllAssociative());
-        
-        return $countDeleteBooks;
+        $queryBuilder = $conn->createQueryBuilder();
+
+        $counterDays = new \DateTime();
+        $counterDays->modify('-7 days');
+        $counterDays = $counterDays->format('Y-m-d H:i:s');
+
+        // dump($counterDays);
+
+        $queryBuilder
+            ->delete('book')
+            ->where('counter = :counter')
+            ->andWhere('publication_date < :counterDays')
+            ->setParameter('counter', $counter )
+            ->setParameter('counterDays', $counterDays);
+
+        $resultSet = $queryBuilder->executeStatement();
+
+        return $resultSet;
     }
 }
