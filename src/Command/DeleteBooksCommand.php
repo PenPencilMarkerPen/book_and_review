@@ -49,24 +49,20 @@ class DeleteBooksCommand extends Command{
 
     private function delete(int $counter = 0)
     {
-        $conn = $this->entityManagerInterface->getConnection();
-
-        $queryBuilder = $conn->createQueryBuilder();
 
         $counterDays = new \DateTime();
         $counterDays->modify('-7 days');
         $counterDays = $counterDays->format('Y-m-d H:i:s');
 
-        // dump($counterDays);
-
-        $queryBuilder
-            ->delete('book')
-            ->where('counter = :counter')
-            ->andWhere('publication_date < :counterDays')
+        $books = $this->entityManagerInterface->createQueryBuilder()
+            ->delete(Book::class, 'b')
+            ->where('b.counter = :counter')
+            ->andWhere('b.publicationDate < :counterDays')
             ->setParameter('counter', $counter )
             ->setParameter('counterDays', $counterDays);
 
-        $resultSet = $queryBuilder->executeStatement();
+
+        $resultSet = $books->getQuery()->getResult();
 
         return $resultSet;
     }
