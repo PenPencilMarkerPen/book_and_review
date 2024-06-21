@@ -16,7 +16,7 @@ class BooksTest extends ApiTestCase {
     {
         BookFactory::createMany(100);
 
-        $response = static::createClient()->request('GET', '/api/books');
+        $response = static::createClient()->request('GET', '/api/books?pagination=true&&itemsPerPage=30');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
@@ -27,11 +27,11 @@ class BooksTest extends ApiTestCase {
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 100,
             'hydra:view' => [
-                '@id' => '/api/books?page=1',
+                '@id' => '/api/books?itemsPerPage=30&pagination=true&page=1',
                 '@type' => 'hydra:PartialCollectionView',
-                'hydra:first' => '/api/books?page=1',
-                'hydra:last' => '/api/books?page=4',
-                'hydra:next' => '/api/books?page=2',
+                'hydra:first' => '/api/books?itemsPerPage=30&pagination=true&page=1',
+                'hydra:last' => '/api/books?itemsPerPage=30&pagination=true&page=4',
+                'hydra:next' => '/api/books?itemsPerPage=30&pagination=true&page=2',
             ],
         ]);
         

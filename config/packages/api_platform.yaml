@@ -11,7 +11,7 @@ api_platform:
     stateless: true
     pagination_client_enabled: true
     pagination_items_per_page: 2
-    pagination_enabled: false
+    pagination_enabled: true
     collection:
       pagination:
         items_per_page_parameter_name: itemsPerPage

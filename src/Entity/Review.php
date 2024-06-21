@@ -22,7 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(),
         new Delete(),
         new Patch(),
-    ]
+    ],
+    paginationClientItemsPerPage: true,
+    paginationClientEnabled: true,
 )]
 class Review
 {
